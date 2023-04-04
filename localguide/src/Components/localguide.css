@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+.Phone {
+    background-color: white;
+    width: 312px; 
+    height: 694px;
+}
+
+.StatusBar {
+    width: 312px; 
+    display: flex;
+    justify-content:start;
+  
+    object-fit: contain;
+}
+
+.LandingPage {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.ShareLocation {
+    margin: 0;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-family: 'Poppins', sans-serif;
+}

@@ -1,11 +1,11 @@
 import './App.css';
-import localguide from './localguide';
+import LocalGuide from './Components/LocalGuide';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {localguide()}
+        {LocalGuide()}
       </header>
     </div>
   );
