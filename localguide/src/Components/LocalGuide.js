@@ -33,10 +33,11 @@ function LocalGuide() {
             </div>}
 
             { showHome &&
-            <div className="LandingPage">
+            <div className="MainPage">
                 <img src={statusBar} className="StatusBar" alt="Status Bar"/>
+                <div className='Circle2'></div>
+                <div className='Circle1'></div>
 
-                <p>This works</p>
             </div>}
         </div>
     );
