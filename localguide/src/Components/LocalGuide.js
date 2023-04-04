@@ -36,7 +36,6 @@ function LocalGuide() {
             <div className="LandingPage">
                 <img src={statusBar} className="StatusBar" alt="Status Bar"/>
 
-                
                 <p>This works</p>
             </div>}
         </div>
