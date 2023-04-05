@@ -43,6 +43,7 @@ function LocalGuide() {
     const [parkClicked, setParkClicked] = useState(false);
     const [pinClicked, setPinClicked] = useState(false);
     const [currentData, setCurrentData] = useState({});
+    const [currentColor, setCurrentColor] = useState('#696969');
 
     const data = [
         {
@@ -76,8 +77,8 @@ function LocalGuide() {
             distance: '100m',
         }, 
     ];
-
-    {/* TODO: change bottombar border based on what is clicked */}
+{/* TODO: when on map page, make button and bottom bar slide in */}
+    {/* TODO: make color changes animated */}
 
 
     const clickPin = (id) => {
@@ -97,6 +98,8 @@ function LocalGuide() {
 
         if(hotelClicked) setHotelClicked(false);
         if(parkClicked) setParkClicked(false);
+
+        setCurrentColor('#064789');
     }
 
     const clickH = () => {
@@ -105,6 +108,8 @@ function LocalGuide() {
 
         if(restaurantClicked) setRestaurantClicked(false);
         if(parkClicked) setParkClicked(false);
+
+        setCurrentColor('#449DD1');
     }
 
     const clickP = () => {
@@ -113,6 +118,8 @@ function LocalGuide() {
 
         if(hotelClicked) setHotelClicked(false);
         if(restaurantClicked) setRestaurantClicked(false);
+
+        setCurrentColor('#F28F3B');
     }
 
     const [scanSize, setScanSize] = useState("Small");
@@ -229,34 +236,53 @@ function LocalGuide() {
                             <FmdGood />
                         </IconButton>
                     </Grow>
-
                 }
 
                 {restaurantClicked && scanSize === 'Large' &&
-                    <IconButton color="secondary" sx={{color: '#064789',position: 'absolute', bottom: '450px', left: '65px'}} size="large" 
-                    onClick={() => clickPin(2)}>
-                        <FmdGood />
-                    </IconButton>
+                    <Grow
+                    in={restaurantClicked && scanSize === 'Large'}
+                    {...(restaurantClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                    >
+                        <IconButton color="secondary" sx={{color: '#064789',position: 'absolute', bottom: '450px', left: '65px'}} size="large" 
+                        onClick={() => clickPin(2)}>
+                            <FmdGood />
+                        </IconButton>
+                    </Grow>
                 }
 
                 {/* HOTELS */}
                 { hotelClicked &&
-                    <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '320px', left: '90px'}} size="large" >
-                        <FmdGood />
-                    </IconButton>
+                    <Grow
+                    in={hotelClicked}
+                    {...(hotelClicked ? { timeout: 700 } : { })}
+                    >
+                        <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '320px', left: '90px'}} size="large" >
+                            <FmdGood />
+                        </IconButton>
+                    </Grow>
                 }
 
-                { hotelClicked && scanSize === 'Large'&& 
-                    <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '275px', left: '20px'}} size="large" >
-                        <FmdGood />
-                    </IconButton>
+                { hotelClicked && scanSize === 'Large' && 
+                    <Grow
+                    in={hotelClicked && scanSize === 'Large'}
+                    {...(hotelClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                    >
+                        <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '275px', left: '20px'}} size="large" >
+                            <FmdGood />
+                        </IconButton>
+                    </Grow>
                 }
 
                 {/* PARKS */}
                 {parkClicked && scanSize === 'Large' &&
-                    <IconButton color="secondary" sx={{color: '#F28F3B',position: 'absolute', bottom: '210px', left: '40px'}} size="large" >
-                        <FmdGood />
-                    </IconButton>
+                    <Grow
+                    in={parkClicked && scanSize === 'Large'}
+                    {...(parkClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                    >
+                        <IconButton color="secondary" sx={{color: '#F28F3B',position: 'absolute', bottom: '210px', left: '40px'}} size="large" >
+                            <FmdGood />
+                        </IconButton>
+                    </Grow>
                 }
 
                 <Modal open={pinClicked} onClose={()=> setPinClicked(false)}>
@@ -295,7 +321,7 @@ function LocalGuide() {
                 </Modal>
 
                 {/* BUTTONS */}
-                <div className="bottomBar">
+                <div className="bottomBar" style={{borderTop: `5px solid ${currentColor}`}}>
                     <IconButton color="secondary" sx={{color: restaurantClicked ? '#064789' : '#696969' }} size="large" onClick={clickR}>
                         <Restaurant />
                     </IconButton>
