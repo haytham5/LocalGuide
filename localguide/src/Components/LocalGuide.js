@@ -2,7 +2,7 @@ import './localguide.css';
 import { useState } from 'react';
 import statusBar from './Status Bar.png';
 import { Button, IconButton, Modal, Box } from '@mui/material';
-import {Wifi1Bar, Wifi2Bar, Wifi, Restaurant, AddCircle, Hotel, Park, FmdGood  } from '@mui/icons-material';
+import {Wifi1Bar, Wifi2Bar, Wifi,  AddCircle, Restaurant, FmdGood, LocationCity, ShoppingBag, LocalBar} from '@mui/icons-material';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
@@ -10,9 +10,7 @@ import CardActions from '@mui/material/CardActions';
 import Rating from '@mui/material/Rating';
 import Grow from '@mui/material/Grow';
 import Fade from '@mui/material/Fade';
-
-
-
+import axios from 'axios';
 
 const scanDiv = {
     paddingTop: '90%', 
@@ -36,48 +34,28 @@ const style = {
 };
 
 function LocalGuide() {
-    const [showLanding, setShowLanding] = useState(true);
-    const [showHome, setShowHome] = useState(false); 
+    const [showLanding, setShowLanding] = useState(false);
+    const [showHome, setShowHome] = useState(true); 
+
     const [restaurantClicked, setRestaurantClicked] = useState(false);
-    const [hotelClicked, setHotelClicked] = useState(false);
+    const [shopClicked, setshopClicked] = useState(false);
+    const [publicPlaceClicked, setPublicPlaceClicked] = useState(false);
+    const [clubClicked, setClubClicked] = useState(false);
+
     const [add, setAdd] = useState(false);
-    const [parkClicked, setParkClicked] = useState(false);
     const [pinClicked, setPinClicked] = useState(false);
     const [currentData, setCurrentData] = useState({});
     const [currentColor, setCurrentColor] = useState('#696969');
+    const [data, setData] = useState([]);
 
-    const data = [
-        {
-            image: '',
-            name: 'Pastramis',
-            type: "Restaurant",
-            addTypeInfo: 'Italian Restaurant',
-            address: '8302, Italian street',
-            rating: 4,
-            review: 'This is a pretty sweet spot',
-            distance: '5km',
-        }, 
-        {
-            image: '',
-            name: 'Chez Ping',
-            type: "Restaurant",
-            addTypeInfo: 'Asian Restaurant',
-            address: '8302, Asian street',
-            rating: 5,
-            review: 'This is a pretty great place',
-            distance: '1km',
-        }, 
-        {
-            image: '',
-            name: 'Box',
-            type: "Restaurant",
-            addTypeInfo: 'Not a Restaurant',
-            address: '8302, side of road',
-            rating: 1,
-            review: 'sucks',
-            distance: '100m',
-        }, 
-    ];
+    if(data.length == 0) {
+        try {
+            axios.get('http://localhost:5000/places/').then(res => setData(res.data));
+        }
+        catch {
+            console.log("Error: Could not gather info from database");
+        }
+    }
 
     const clickPin = (id) => {
         if(pinClicked) {
@@ -86,11 +64,10 @@ function LocalGuide() {
         else {
             setPinClicked(true);
             setCurrentData(data[id]);
-
         }
     }
 
-    const clickR = () => {
+    const clickRestaurant = () => {
         if(restaurantClicked) {
             setRestaurantClicked(false);
             setCurrentColor('#696969');
@@ -100,39 +77,54 @@ function LocalGuide() {
             setCurrentColor('#064789');
         }
 
-        if(hotelClicked) setHotelClicked(false);
-        if(parkClicked) setParkClicked(false);
-
+        if(shopClicked) setshopClicked(false);
+        if(publicPlaceClicked) setPublicPlaceClicked(false);
+        if(clubClicked) setClubClicked(false);
     }
 
-    const clickH = () => {
-        if(hotelClicked) {
-            setHotelClicked(false);
+    const clickShop = () => {
+        if(shopClicked) {
+            setshopClicked(false);
             setCurrentColor('#696969');
         }
         else {
-            setHotelClicked(true);
+            setshopClicked(true);
             setCurrentColor('#449DD1');
         }
 
         if(restaurantClicked) setRestaurantClicked(false);
-        if(parkClicked) setParkClicked(false);
-
+        if(publicPlaceClicked) setPublicPlaceClicked(false);
+        if(clubClicked) setClubClicked(false);
     }
 
-    const clickP = () => {
-        if(parkClicked) {
-            setParkClicked(false);
+    const clickPublicPlace = () => {
+        if(publicPlaceClicked) {
+            setPublicPlaceClicked(false);
             setCurrentColor('#696969');
         }
         else {
-            setParkClicked(true);
+            setPublicPlaceClicked(true);
             setCurrentColor('#F28F3B');
         }
 
-        if(hotelClicked) setHotelClicked(false);
+        if(shopClicked) setshopClicked(false);
         if(restaurantClicked) setRestaurantClicked(false);
+        if(clubClicked) setClubClicked(false);
+    }
 
+    const clickClub = () => {
+        if(clubClicked) {
+            setClubClicked(false);
+            setCurrentColor('#696969');
+        }
+        else {
+            setClubClicked(true);
+            setCurrentColor('#25283D');
+        }
+
+        if(publicPlaceClicked) setPublicPlaceClicked(false);
+        if(shopClicked) setshopClicked(false);
+        if(restaurantClicked) setRestaurantClicked(false);
     }
 
     const [scanSize, setScanSize] = useState("Small");
@@ -234,7 +226,7 @@ function LocalGuide() {
                             {...(restaurantClicked ? { timeout: 700 } : {})}
                             >
                                 <IconButton color="secondary" sx={{color: '#064789',position: 'absolute', bottom: '355px', left: '125px'}} size="large" 
-                                onClick={() => clickPin(0)}>
+                                onClick={() => clickPin(3)}>
                                     <FmdGood />
                                 </IconButton>      
                             </Grow>
@@ -246,7 +238,19 @@ function LocalGuide() {
                             {...(restaurantClicked && scanSize !== 'Small' ? { timeout: 700 } : {})}
                             >
                                 <IconButton color="secondary" sx={{color: '#064789',position: 'absolute', bottom: '260px', left: '190px'}} size="large" 
-                                onClick={() => clickPin(1)}>
+                                onClick={() => clickPin(4)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        {restaurantClicked && scanSize !== 'Small' &&
+                            <Grow
+                            in={restaurantClicked && scanSize !== 'Small'}
+                            {...(restaurantClicked && scanSize !== 'Small'? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#064789',position: 'absolute', bottom: '300px', left: '65px'}} size="large" 
+                                onClick={() => clickPin(9)}>
                                     <FmdGood />
                                 </IconButton>
                             </Grow>
@@ -258,42 +262,143 @@ function LocalGuide() {
                             {...(restaurantClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
                             >
                                 <IconButton color="secondary" sx={{color: '#064789',position: 'absolute', bottom: '450px', left: '65px'}} size="large" 
+                                onClick={() => clickPin(10)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        {/* SHOPS */}
+                        { shopClicked &&
+                            <Grow
+                            in={shopClicked}
+                            {...(shopClicked ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '320px', left: '90px'}} size="large" 
+                                onClick={() => clickPin(1)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        { shopClicked && scanSize !== 'Small' &&
+                            <Grow
+                            in={shopClicked}
+                            {...(shopClicked ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '265px', left: '180px'}} size="large" 
+                                onClick={() => clickPin(13)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        { shopClicked && scanSize === 'Large' && 
+                            <Grow
+                            in={shopClicked && scanSize === 'Large'}
+                            {...(shopClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '275px', left: '20px'}} size="large" 
+                                onClick={() => clickPin(11)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        { shopClicked && scanSize === 'Large' && 
+                            <Grow
+                            in={shopClicked && scanSize === 'Large'}
+                            {...(shopClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '415px', left: '20px'}} size="large" 
+                                onClick={() => clickPin(14)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+
+                        {/* PUBLIC PLACES */}
+                        {publicPlaceClicked &&
+                            <Grow
+                            in={publicPlaceClicked}
+                            {...(publicPlaceClicked ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#F28F3B',position: 'absolute', bottom: '350px', left: '150px'}} size="large" 
                                 onClick={() => clickPin(2)}>
                                     <FmdGood />
                                 </IconButton>
                             </Grow>
                         }
 
-                        {/* HOTELS */}
-                        { hotelClicked &&
+                        {publicPlaceClicked && scanSize !== 'Small'  &&
                             <Grow
-                            in={hotelClicked}
-                            {...(hotelClicked ? { timeout: 700 } : { })}
+                            in={publicPlaceClicked && scanSize !== 'Small' }
+                            {...(publicPlaceClicked && scanSize !== 'Small' ? { timeout: 700 } : { })}
                             >
-                                <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '320px', left: '90px'}} size="large" >
+                                <IconButton color="secondary" sx={{color: '#F28F3B',position: 'absolute', bottom: '280px', left: '140px'}} size="large" 
+                                onClick={() => clickPin(6)}>
                                     <FmdGood />
                                 </IconButton>
                             </Grow>
                         }
 
-                        { hotelClicked && scanSize === 'Large' && 
+                        {publicPlaceClicked && scanSize === 'Large' &&
                             <Grow
-                            in={hotelClicked && scanSize === 'Large'}
-                            {...(hotelClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                            in={publicPlaceClicked && scanSize === 'Large'}
+                            {...(publicPlaceClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
                             >
-                                <IconButton color="secondary" sx={{color: '#449DD1',position: 'absolute', bottom: '275px', left: '20px'}} size="large" >
+                                <IconButton color="secondary" sx={{color: '#F28F3B',position: 'absolute', bottom: '210px', left: '40px'}} size="large" 
+                                onClick={() => clickPin(7)}>
                                     <FmdGood />
                                 </IconButton>
                             </Grow>
                         }
 
-                        {/* PARKS */}
-                        {parkClicked && scanSize === 'Large' &&
+                        {publicPlaceClicked && scanSize !== 'Small' &&
                             <Grow
-                            in={parkClicked && scanSize === 'Large'}
-                            {...(parkClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                            in={publicPlaceClicked && scanSize !== 'Small' }
+                            {...(publicPlaceClicked && scanSize !== 'Small'  ? { timeout: 700 } : { })}
                             >
-                                <IconButton color="secondary" sx={{color: '#F28F3B',position: 'absolute', bottom: '210px', left: '40px'}} size="large" >
+                                <IconButton color="secondary" sx={{color: '#F28F3B',position: 'absolute', bottom: '250px', left: '90px'}} size="large" 
+                                onClick={() => clickPin(8)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        {/* CLUBS */}
+                        {clubClicked && scanSize === 'Large' &&
+                            <Grow
+                            in={clubClicked && scanSize === 'Large'}
+                            {...(clubClicked && scanSize === 'Large' ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#25283D',position: 'absolute', bottom: '235px', left: '48px'}} size="large" 
+                                onClick={() => clickPin(0)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        {clubClicked && scanSize !== 'Small' &&
+                            <Grow
+                            in={clubClicked && scanSize !== 'Small'}
+                            {...(clubClicked && scanSize !== 'Small' ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color: '#25283D',position: 'absolute', bottom: '250px', left: '115px'}} size="large" 
+                                onClick={() => clickPin(12)}>
+                                    <FmdGood />
+                                </IconButton>
+                            </Grow>
+                        }
+
+                        {clubClicked && scanSize !== 'Small' &&
+                            <Grow
+                            in={clubClicked && scanSize !== 'Small'}
+                            {...(clubClicked && scanSize !== 'Small' ? { timeout: 700 } : { })}
+                            >
+                                <IconButton color="secondary" sx={{color:  '#25283D',position: 'absolute', bottom: '310px', left: '50px'}} size="large" 
+                                onClick={() => clickPin(5)}>
                                     <FmdGood />
                                 </IconButton>
                             </Grow>
@@ -314,11 +419,11 @@ function LocalGuide() {
                                     </Typography>
 
                                     <Typography variant="h6" component="p">
-                                        {currentData.addTypeInfo}
+                                       {currentData.type} - {currentData.info}
                                     </Typography>
 
                                     <Typography gutterBottom variant="subtitle1" color="text.secondary">
-                                        <strong>{currentData.address}</strong>, <em>{currentData.distance}</em>
+                                        <strong>{currentData.address}</strong>, <em>{currentData.distance}km</em>
                                     </Typography>
 
                                     <Rating value={currentData.rating} readOnly/>
@@ -336,17 +441,21 @@ function LocalGuide() {
 
                         {/* BUTTONS */}
                         <div className="bottomBar" style={{borderTop: `5px solid ${currentColor}`, transitionDuration: '0.3s'}}>
-                            <IconButton color="secondary" sx={{color: restaurantClicked ? '#064789' : '#696969' }} size="large" onClick={clickR}>
+                            <IconButton color="secondary" sx={{color: restaurantClicked ? '#064789' : '#696969' }} size="large" onClick={clickRestaurant}>
                                 <Restaurant />
                             </IconButton>
 
-                            <IconButton color="secondary" sx={{color: hotelClicked ? '#449DD1': '#696969'}} size="large" onClick={clickH}>
-                                <Hotel />
+                            <IconButton color="secondary" sx={{color: shopClicked ? '#449DD1': '#696969'}} size="large" onClick={clickShop}>
+                                <ShoppingBag />
+                            </IconButton>
+
+                            <IconButton color="secondary" sx={{color: clubClicked ? '#25283D': '#696969'}} size="large" onClick={clickClub}>
+                                <LocalBar />
                             </IconButton>
 
                             { add &&
-                                <IconButton color="secondary" sx={{color: parkClicked ? '#F28F3B' : '#696969' }} size="large" onClick={clickP}>
-                                    <Park />
+                                <IconButton color="secondary" sx={{color: publicPlaceClicked ? '#F28F3B' : '#696969' }} size="large" onClick={clickPublicPlace}>
+                                    <LocationCity />
                                 </IconButton>
                             }
 
