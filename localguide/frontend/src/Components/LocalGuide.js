@@ -33,9 +33,9 @@ const style = {
   borderRadius: '5%'
 };
 
-function LocalGuide() {
-    const [showLanding, setShowLanding] = useState(false);
-    const [showHome, setShowHome] = useState(true); 
+function LocalGuide() { 
+    const [showLanding, setShowLanding] = useState(true);
+    const [showHome, setShowHome] = useState(false); 
 
     const [restaurantClicked, setRestaurantClicked] = useState(false);
     const [shopClicked, setshopClicked] = useState(false);
@@ -47,6 +47,11 @@ function LocalGuide() {
     const [currentData, setCurrentData] = useState({});
     const [currentColor, setCurrentColor] = useState('#696969');
     const [data, setData] = useState([]);
+
+    //TODO: ADD LOGO
+    //TODO: CHANGE FONT
+    //TODO: ADD 'ADDING PLACE' Modal
+    //TODO: Add signifier of what kind of place is selected
 
     if(data.length == 0) {
         try {

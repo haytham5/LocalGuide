@@ -1,5 +1,5 @@
 import './App.css';
-import LocalGuide from './Components/localguide';
+import LocalGuide from './Components/LocalGuide';
 
 function App() {
   return (
