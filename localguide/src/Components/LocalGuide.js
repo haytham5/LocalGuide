@@ -11,9 +11,6 @@ import Rating from '@mui/material/Rating';
 import Grow from '@mui/material/Grow';
 import Fade from '@mui/material/Fade';
 
-
-
-
 const scanDiv = {
     paddingTop: '90%', 
     height: '100%', 
@@ -182,6 +179,11 @@ function LocalGuide() {
                         
                         } onClick={increaseSize} sx={{marginTop: '10px', transitionDuration: '0.3s', bgcolor: currentColor, boxShadow: 0, '&:hover':{ bgcolor: currentColor}}}>{scanSize}</Button>
                         
+                        <IconButton color="secondary" sx={{color: '#C8553D',position: 'absolute', bottom: '332px', left: '135px'}} size="large" 
+                        >
+                            <FmdGood />
+                        </IconButton>
+
                         {/* SCAN RADIUS */}
                         {scanSize === "Small" &&
                             <Box sx={{ display: 'flex' }}>
