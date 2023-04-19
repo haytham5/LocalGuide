@@ -75,12 +75,11 @@ function LocalGuide() {
 
     if(data.length === 0) {
         try {
-            axios.get('http://localhost:5000/places/').then(res => setData(res.data));
+            axios.get('http://localhost:5000/places/').then(res => setData(res.data))
+            .catch(() => {setData(places)});
         }
         catch {
             console.log("Error: Could not gather info from database.\nReplacing with Test Data if not connected.");
-
-            setData(places);
         }
     }
 
