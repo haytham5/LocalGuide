@@ -4,9 +4,8 @@ import { useState } from 'react';
 import statusBar from './Status Bar.png';
 import logo from './logo.png'
 import { Button, IconButton, Modal, Box, createTheme, ThemeProvider, CssBaseline } from '@mui/material';
-import {Wifi1Bar, Wifi2Bar, Wifi,  AddCircle, Restaurant, FmdGood, LocationCity, ShoppingBag, LocalBar, Opacity} from '@mui/icons-material';
+import {Wifi1Bar, Wifi2Bar, Wifi,  AddCircle, Restaurant, FmdGood, LocationCity, ShoppingBag, LocalBar} from '@mui/icons-material';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import Rating from '@mui/material/Rating';
@@ -14,6 +13,7 @@ import Grow from '@mui/material/Grow';
 import Fade from '@mui/material/Fade';
 import axios from 'axios';
 import Popover from '@mui/material/Popover';
+import places from './data'
 
 const theme = createTheme({
     typography: {
@@ -73,12 +73,14 @@ function LocalGuide() {
 
     const [placeType, setPlaceType] = useState("");
 
-    if(data.length == 0) {
+    if(data.length === 0) {
         try {
             axios.get('http://localhost:5000/places/').then(res => setData(res.data));
         }
         catch {
-            console.log("Error: Could not gather info from database");
+            console.log("Error: Could not gather info from database.\nReplacing with Test Data if not connected.");
+
+            setData(places);
         }
     }
 
@@ -177,7 +179,6 @@ function LocalGuide() {
     };
   
     const open = Boolean(anchorEl);
-  
 
     return (
         <ThemeProvider theme={theme}>
@@ -192,7 +193,7 @@ function LocalGuide() {
                             {...(showLanding ? { timeout: 750 } : {})}
                         >    
                             <Typography variant="h4" component="h4" sx={{marginTop: '20px', color: '#449DD1', fontWeight: 'Bold', fontFamily:"Poppins"}}>
-                                LocalGuide
+                                LocalGuide 
                             </Typography>
                         </Fade>
 
