@@ -8,6 +8,15 @@ A mockup for an app that lets you scan your environs for places of interest.
 - Clickable pins that display place information
 - Addable filters listed on bottom of app
 
+## Instructions
+1. Clone the repository locally, and open the localguide/frontend folder in terminal.
+2. Assuming node.js is downloaded, run the 'npm start' command to start the react application.
+3. Click on the logo to begin scanning. From here a few options avail themselves to the user:
+  - Increase the scanning range by pressing the range button atop the screen.
+  - Select a filter by pressing one of the icons on the bottom of the screen.
+  - Add a new filter with the Plus icon.
+  - Get place information by clicking on a pin as it appears onscreen within the scanning range.
+
 ## Screenshots
 ![Screenshot 2023-04-19 170910](https://user-images.githubusercontent.com/78439856/233202366-5b6de56f-c554-42ff-abd9-3141f3f5ff22.png)
 ![Screenshot 2023-04-19 170927](https://user-images.githubusercontent.com/78439856/233202367-24f043a1-6f9d-4c4d-9371-0c2ab3ecfbb1.png)
